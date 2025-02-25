@@ -1,16 +1,22 @@
-use termion::{color, style, terminal_size};
-
-use std::io;
+use ncurses::*;
 
 fn main() {
-   println!("{:?}", terminal_size()); 
+    initscr();
+    addstr("Hello, World!");
+    refresh();
 
-    //print!("{}{}Stuff",
-    //        termion::clear::All,
-    //        termion::cursor::Goto(1, 1));
+    let mut quit = false;
 
-    //println!("{}Red", color::Fg(color::Red));
-    //println!("{}Blue", color::Fg(color::Blue));
-    //println!("{}Blue'n'Bold{}", style::Bold, style::Reset);
-    //println!("{}Just plain italic", style::Italic);
+    while !quit {
+        let key = getch();
+
+        match key as u8 as char {
+            'q' => quit = true,
+            _ => {}
+        }
+    }
+
+    getch();
+   
+    endwin();
 }
