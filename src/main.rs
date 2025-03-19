@@ -25,7 +25,7 @@ impl Ui {
         self.list_curr = Some(id);
     }
 
-    fn list_element(&mut self, label:&str, id: Id) {
+    fn list_element(&mut self, label:&str, id: Id) -> bool {
         let id_curr = self.list_curr.expect("Not allowed to create list 
             elements outside of lists");
 
@@ -37,6 +37,8 @@ impl Ui {
                 REGULAR_PAIR
             }
         });
+        
+        return false;
     }
 
     fn label(&mut self, text: &str, pair: i16) {
@@ -65,14 +67,14 @@ fn main() {
     init_pair(HIGHLIGHT_PAIR, COLOR_BLACK, COLOR_WHITE); 
 
     let mut quit = false;
-    let todos: Vec<String> = vec![
+    let mut todos: Vec<String> = vec![
         "Write the todo app".to_string(),
         "Buy bread".to_string(),
         "Get tea".to_string()
     ];
 
     let mut todo_curr: usize = 0;
-    let dones: Vec<String> = vec![
+    let mut dones: Vec<String> = vec![
         "Find gsoc projects to work".to_string(),
         "Do home tickets".to_string(),
     ];
@@ -80,6 +82,8 @@ fn main() {
 
     let mut ui = Ui::default();
     while !quit {
+        erase();
+
         ui.begin(0, 0);
         {
             ui.label("TODO:", REGULAR_PAIR);
@@ -92,7 +96,7 @@ fn main() {
             ui.label("-------------------------", REGULAR_PAIR);
 
             ui.label("DONE:", REGULAR_PAIR);
-            ui.begin_list(done_curr + 69420);
+            ui.begin_list(0);
             for (index, done) in dones.iter().enumerate() {
                 ui.list_element(&format!("- [x] {}", done), index + 69420);
             }
@@ -108,7 +112,14 @@ fn main() {
             'w' => if todo_curr > 0 {
                 todo_curr -= 1;
             },
-            's' => todo_curr = min(todo_curr + 1, todos.len() -1), 
+            's' => if todo_curr + 1 < todos.len() {
+                todo_curr += 1; 
+            }
+            '\n' => {
+                if todo_curr < todos.len() {
+                    dones.push(todos.remove(todo_curr));
+                }
+            }
             _ => {}
         }
     }
