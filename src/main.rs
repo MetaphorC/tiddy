@@ -56,16 +56,16 @@ impl Ui {
     }
 }
 
-enum Focus {
+enum Tab {
     Todo,
     Done
 }
 
-impl Focus {
+impl Tab {
     fn toggle(&self) -> Self {
         match self {
-            Focus::Todo => Focus::Done,
-            Focus::Done => Focus::Todo,
+            Tab::Todo => Tab::Done,
+            Tab::Done => Tab::Todo,
         }
     }
 }
@@ -105,7 +105,7 @@ fn main() {
         "Do the CCExtractor SWAY task".to_string(),
     ];
     let mut done_curr: usize = 0;
-    let mut focus = Focus::Todo;
+    let mut tab = Tab::Todo;
 
     let mut ui = Ui::default();
     while !quit {
@@ -113,17 +113,19 @@ fn main() {
 
         ui.begin(0, 0);
         {
-            match focus {
-                Focus::Todo => {
-                    ui.label("TODO:", REGULAR_PAIR);
+            match tab {
+                Tab::Todo => {
+                    ui.label("[TODO] DONE ", REGULAR_PAIR);
+                    ui.label("------------", REGULAR_PAIR);
                     ui.begin_list(todo_curr);
                     for (index, todo) in todos.iter().enumerate() {
                         ui.list_element(&format!("- [ ] {}", todo), index);
                     }
                     ui.end_list();
                 },
-                Focus::Done => {
-                    ui.label("DONE:", REGULAR_PAIR);
+                Tab::Done => {
+                    ui.label(" TODO [DONE]", REGULAR_PAIR);
+                    ui.label("------------", REGULAR_PAIR);
                     ui.begin_list(done_curr);
                     for (index, done) in dones.iter().enumerate() {
                         ui.list_element(&format!("- [x] {}", done), index);
@@ -139,24 +141,24 @@ fn main() {
         let key = getch();
         match key as u8 as char {
             'q' => quit = true,
-            'w' => match focus {
-                Focus::Todo => list_up(&mut todo_curr),
-                Focus::Done => list_up(&mut done_curr)
+            'w' => match tab {
+                Tab::Todo => list_up(&mut todo_curr),
+                Tab::Done => list_up(&mut done_curr)
             }
-            's' => match focus {
-                Focus::Todo => list_down(&todos, &mut todo_curr),
-                Focus::Done => list_down(&dones, &mut done_curr)
+            's' => match tab {
+                Tab::Todo => list_down(&todos, &mut todo_curr),
+                Tab::Done => list_down(&dones, &mut done_curr)
             }
-            '\n' => match focus {
-                Focus::Todo => if todo_curr < todos.len() {
+            '\n' => match tab {
+                Tab::Todo => if todo_curr < todos.len() {
                     dones.push(todos.remove(todo_curr));
                 }
-                Focus::Done => if done_curr < dones.len() {
+                Tab::Done => if done_curr < dones.len() {
                     todos.push(dones.remove(done_curr));
                 }
             }
             '\t' => {
-                focus = focus.toggle();
+                tab = tab.toggle();
             }
             _ => {
                // todos.push(format!("{}", key));

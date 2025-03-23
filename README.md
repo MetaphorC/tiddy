@@ -14,3 +14,9 @@ cd tiddy
 cargo run
 ```
 
+|Keybinds|Effect|
+|---|---|
+|<kbd>w</kbd>, <kbd>s</kbd>|Move up and down|
+|<kbd>q</kbd>|Quit|
+|<kbd>TAB</kbd>|Switch tabs|
+|<kbd>Enter</kbd>|Perform action on UI highlighted element|
