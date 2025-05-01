@@ -1,5 +1,5 @@
 # tiddy
-a terminal to-do app written in rust
+a vim spirited terminal todo app written in rust | forked from [todo-rs by Tsoding](https://github.com/tsoding/todo-rs)
 
 ## setup
 *to build, and run, make sure you have rust and cargo installed..*
@@ -11,12 +11,18 @@ git clone https://github.com/metaphorc/tiddy
 
 cd tiddy
 
-cargo run
+cargo build
 ```
+## Manual
 
 |Keybinds|Effect|
 |---|---|
-|<kbd>w</kbd>, <kbd>s</kbd>|Move up and down|
-|<kbd>q</kbd>|Quit|
-|<kbd>TAB</kbd>|Switch tabs|
-|<kbd>Enter</kbd>|Perform action on UI highlighted element|
+|<kbd>k</kbd>, <kbd>j</kbd>|Move up and down|
+|<kbd>Shift+K</kbd>, <kbd>Shift+J</kbd>|Move selected item up or down|
+|<kbd>g</kbd>, <kbd>G</kbd> | Jump to the start, and end of the current item list|
+|<kbd>i</kbd>|Insert a new element|
+|<kbd>r</kbd>|Rename the current element|
+|<kbd>d</kbd>|Delete the current element|
+|<kbd>q</kbd>|Quit and save state|
+|<kbd>TAB</kbd>|Switch panels|
+|<kbd>Enter</kbd>|Move element to and fro between TODO and DONE|
